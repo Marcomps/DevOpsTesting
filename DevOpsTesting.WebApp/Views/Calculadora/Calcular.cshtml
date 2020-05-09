@@ -1,0 +1,47 @@
+﻿@model CalculadoraViewModel
+
+@{
+    ViewData["Title"] = "Calculadora";
+}
+
+<h1>Calculadora</h1>
+
+<form asp-action="Calcular" method="post">
+    <div class="form-group col-md-6">
+        <label asp-for="CalculadoraModel.Numero1">Número 1</label>
+        <input asp-for="CalculadoraModel.Numero1" class="form-control" />
+    </div>
+    <div class="form-group col-md-6">
+        <label asp-for="CalculadoraModel.Numero1">Número 2</label>
+        <input asp-for="CalculadoraModel.Numero2" class="form-control" />
+    </div>
+    <div class="form-group col-md-6">
+        <button type="submit" class="btn btn-info">Sumar</button>
+        @if (Model.EsCalculado)
+        {
+            <button type="button" class="btn btn-info" id="btn_reiniciar">Reiniciar</button>
+        }
+    </div>
+</form>
+<br />
+@if (Model.EsCalculado)
+{
+    <text>
+        <h5>Última operación:</h5>
+        <div class="form-group col-md-6">
+            <label for="Operacion">Operación</label>
+            <input id="Operacion" class="form-control form-control-sm" value="@Model.CalculadoraModel.Numero1 + @Model.CalculadoraModel.Numero2" readonly />
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="CalculadoraModel.Resultado"></label>
+            <input asp-for="CalculadoraModel.Resultado" class="form-control form-control-sm" readonly />
+        </div>
+    </text>
+}
+
+<script>
+    var btnReiniciar = document.getElementById("btn_reiniciar");
+    btnReiniciar.addEventListener("click", function () {
+        window.location.href = "@Url.Action("Calcular", "Calculadora")";
+    });
+</script>

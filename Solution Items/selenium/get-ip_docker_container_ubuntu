@@ -1,0 +1,4 @@
+#!/bin/bash
+
+IP=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' selenium-hub`
+echo "##vso[task.setvariable variable=SeleniumDockerHost:Host;]$IP"

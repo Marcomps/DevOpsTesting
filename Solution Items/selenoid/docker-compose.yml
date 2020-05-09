@@ -1,0 +1,45 @@
+# To execute this docker-compose yml file use `docker-compose -f <file_name> up`
+# Add the `-d` flag at the end for detached execution
+version: "3"
+services:
+  selenoid:
+    container_name: selenoid
+    network_mode: bridge
+    image: aerokube/selenoid
+    ports:
+      - "4444:4444"
+    volumes:
+      - ./config:/etc/selenoid:ro # assumed current dir contains browsers.json
+      - /var/run/docker.sock:/var/run/docker.sock
+  selenoid-ui:
+    container_name: selenoid-ui
+    network_mode: bridge
+    image: aerokube/selenoid-ui
+    command: -selenoid-uri 'http://selenoid:4444'
+    depends_on:
+      - selenoid
+    ports:
+      - "8080:8080"
+    links:
+      - selenoid
+  chrome:
+    image: selenoid/chrome
+    depends_on:
+      - selenoid
+    environment:
+      - HUB_HOST=selenoid
+      - HUB_PORT=4444
+  firefox:
+    image: selenoid/firefox
+    depends_on:
+      - selenoid
+    environment:
+      - HUB_HOST=selenoid
+      - HUB_PORT=4444
+  opera:
+    image: selenoid/opera
+    depends_on:
+      - selenoid
+    environment:
+      - HUB_HOST=selenoid
+      - HUB_PORT=4444
